@@ -271,6 +271,7 @@ func TestNoteRepo_Update(t *testing.T) {
 		Title:       &note.Title,
 		IsCompleted: &isCompleted,
 	}
+	canNotGetNoteError := errors.New("can not get note")
 	cases := []struct {
 		name         string
 		expect       *model.Note
@@ -300,9 +301,9 @@ func TestNoteRepo_Update(t *testing.T) {
 			afterUpdate:  &note,
 			request:      request,
 			code:         500,
-			err:          errors.New("can not get note"),
+			err:          canNotGetNoteError,
 			getResult:    nil,
-			getErr:       errors.New("can not get note"),
+			getErr:       canNotGetNoteError,
 		},
 		{
 			name:         "case 2: note not exist",
@@ -354,6 +355,7 @@ func TestNoteRepo_Delete(t *testing.T) {
 		Title:       &note.Title,
 		IsCompleted: &isCompleted,
 	}
+	canNotGetNoteError := errors.New("can not get note")
 	cases := []struct {
 		name         string
 		expect       *uint
@@ -379,9 +381,9 @@ func TestNoteRepo_Delete(t *testing.T) {
 			expect:    &noteIdZero,
 			request:   request,
 			code:      500,
-			err:       errors.New("can not get note"),
+			err:       canNotGetNoteError,
 			getResult: nil,
-			getErr:    errors.New("can not get note"),
+			getErr:    canNotGetNoteError,
 		},
 		{
 			name:      "case 3: note not exist",
@@ -393,12 +395,12 @@ func TestNoteRepo_Delete(t *testing.T) {
 			getErr:    nil,
 		},
 		{
-			name:         "case 4: can not update note",
+			name:         "case 4: can not delete note",
 			expect:       &noteIdZero,
 			beforeDelete: &note,
 			request:      request,
 			code:         500,
-			err:          errors.New("can not update note"),
+			err:          errors.New("can not delete note"),
 			getResult:    &note,
 			getErr:       nil,
 		},
